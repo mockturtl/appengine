@@ -4,7 +4,7 @@
 
 library appengine.client_context;
 
-import 'package:gcloud/db.dart';
+//import 'package:gcloud/db.dart';
 import 'package:gcloud/storage.dart';
 
 import 'appengine_context.dart';
@@ -33,7 +33,7 @@ abstract class ClientContext {
 }
 
 class Services {
-  final DatastoreDB db;
+  final dynamic db;
   final Storage storage;
   final Logging logging;
 

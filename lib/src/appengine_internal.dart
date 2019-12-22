@@ -8,7 +8,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:gcloud/datastore.dart' as datastore;
-import 'package:gcloud/db.dart' as db;
+//import 'package:gcloud/db.dart' as db;
 import 'package:gcloud/http.dart' as gcloud_http;
 import 'package:gcloud/service_scope.dart' as ss;
 import 'package:gcloud/storage.dart' as storage;
@@ -104,8 +104,8 @@ Future _withAppEngineServicesInternal(
     final ContextRegistry contextRegistry = await _initializeAppEngine();
     final bgServices = contextRegistry.newBackgroundServices();
 
-    db.registerDbService(bgServices.db);
-    datastore.registerDatastoreService(bgServices.db.datastore);
+    //db.registerDbService(bgServices.db);
+    //datastore.registerDatastoreService(bgServices.db.datastore);
     storage.registerStorageService(bgServices.storage);
     logging.registerLoggingService(bgServices.logging);
 
@@ -180,10 +180,10 @@ Future<ContextRegistry> _initializeAppEngine() async {
   final storageService =
       await _obtainStorageService(context.applicationID, gcloudKey);
 
-  final dbService = await _obtainDatastoreService(
-      context.applicationID, dbEmulatorHost, gcloudKey);
+  //final dbService = await _obtainDatastoreService(
+      //context.applicationID, dbEmulatorHost, gcloudKey);
 
-  return ContextRegistry(loggerFactory, dbService, storageService, context);
+  return ContextRegistry(loggerFactory, null, storageService, context);
 }
 
 /// Obtains a gRPC-based datastore implementation.
@@ -208,22 +208,23 @@ Future<ContextRegistry> _initializeAppEngine() async {
 ///
 /// The returned [db.DatastoreDB] will be usable within the current service
 /// scope.
-Future<db.DatastoreDB> _obtainDatastoreService(
+Future<void> _obtainDatastoreService(
     String projectId, String dbEmulatorHost, String gcloudKey) async {
-  String endpoint = 'https://datastore.googleapis.com';
-  bool needAuthorization = true;
-  if (dbEmulatorHost != null && dbEmulatorHost.contains(':')) {
-    // The datastore emulator uses unencrypted http/2, we use therefore 'http'
-    // for the uri scheme.
-    endpoint = 'http://$dbEmulatorHost';
-    needAuthorization = false;
-  }
-  final authenticator =
-      _obtainAuthenticator(gcloudKey, grpc_datastore_impl.OAuth2Scopes);
-  final grpcClient = _getGrpcClientChannel(endpoint, needAuthorization);
-  final rawDatastore = grpc_datastore_impl.GrpcDatastoreImpl(
-      grpcClient, authenticator, projectId);
-  return db.DatastoreDB(rawDatastore, modelDB: db.ModelDBImpl());
+  return null;
+  //String endpoint = 'https://datastore.googleapis.com';
+  //bool needAuthorization = true;
+  //if (dbEmulatorHost != null && dbEmulatorHost.contains(':')) {
+    //// The datastore emulator uses unencrypted http/2, we use therefore 'http'
+    //// for the uri scheme.
+    //endpoint = 'http://$dbEmulatorHost';
+    //needAuthorization = false;
+  //}
+  //final authenticator =
+      //_obtainAuthenticator(gcloudKey, grpc_datastore_impl.OAuth2Scopes);
+  //final grpcClient = _getGrpcClientChannel(endpoint, needAuthorization);
+  //final rawDatastore = grpc_datastore_impl.GrpcDatastoreImpl(
+      //grpcClient, authenticator, projectId);
+  //return db.DatastoreDB(rawDatastore, modelDB: db.ModelDBImpl());
 }
 
 /// Creates a storage service using the service account credentials (if given)

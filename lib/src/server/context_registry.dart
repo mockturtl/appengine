@@ -7,7 +7,7 @@ library appengine.context_registry;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:gcloud/db.dart' as db;
+//import 'package:gcloud/db.dart' as db;
 import 'package:gcloud/storage.dart' as storage;
 
 import '../appengine_context.dart';
@@ -29,7 +29,7 @@ abstract class LoggerFactory {
 
 class ContextRegistry {
   final LoggerFactory _loggingFactory;
-  final db.DatastoreDB _db;
+  final dynamic _db;
   final storage.Storage _storage;
   final AppEngineContext _appengineContext;
 
